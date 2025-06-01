@@ -3,8 +3,9 @@ import type { AuthState, User } from "../types";
 
 const initialState: AuthState = {
   user: null,
-  isAuhenticated: false,
+  isAuthenticated: false,
   isLoading: false,
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -13,22 +14,30 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      state.isAuhenticated = true;
+      state.isAuthenticated = true;
       state.isLoading = false;
+      state.error = null;
     },
 
     clearUser: (state) => {
       state.user = null;
-      state.isAuhenticated = false;
+      state.isAuthenticated = false;
       state.isLoading = false;
+      state.error = null;
     },
 
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
 });
 
-
-export const { setUser, clearUser, setLoading } = authSlice.actions
-export default authSlice.reducer
+export const { setUser, clearUser, setLoading, setError, clearError } = authSlice.actions;
+export default authSlice.reducer;

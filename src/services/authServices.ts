@@ -1,6 +1,6 @@
 import { ID } from "appwrite";
 import { account } from "../lib/appwrite";
-import { clearUser, setLoading, setUser } from "../store/authSlice";
+import { clearUser, setError, setLoading, setUser } from "../store/authSlice";
 import { store } from "../store/store";
 
 export const authService = {
@@ -14,14 +14,17 @@ export const authService = {
           $id: user.$id,
           email: user.email,
           name: user.name,
-        })
+        }),
       );
 
       return user;
-    } catch (error) {
+    } catch (error: any) {
       store.dispatch(clearUser());
+      store.dispatch(setError(error.message || "Something went wrong"));
       console.log(error);
       return null;
+    } finally {
+      store.dispatch(setLoading(false));
     }
   },
 
@@ -36,13 +39,16 @@ export const authService = {
           $id: user.$id,
           email: user.email,
           name: user.name,
-        })
+        }),
       );
 
       return user;
-    } catch (error) {
+    } catch (error: any) {
       store.dispatch(clearUser());
+      store.dispatch(setError(error.message || "Something went wrong"));
       throw error;
+    } finally {
+      store.dispatch(setLoading(false));
     }
   },
 
@@ -51,16 +57,21 @@ export const authService = {
       store.dispatch(setLoading(true));
       await account.create(ID.unique(), email, password, name);
       return await this.login(email, password);
-    } catch (error) {
+    } catch (error: any) {
       store.dispatch(clearUser());
+      store.dispatch(setError(error.message || "Something went wrong"));
       throw error;
+    } finally {
+      store.dispatch(setLoading(false));
     }
   },
   async logOut() {
     try {
       await account.deleteSession("current");
-    } catch (error) {
       store.dispatch(clearUser());
+    } catch (error: any) {
+      store.dispatch(clearUser());
+      store.dispatch(setError(error.message || "Something went wrong"));
       throw error;
     }
   },
