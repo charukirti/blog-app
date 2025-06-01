@@ -10,8 +10,9 @@ export interface User {
 
 export interface AuthState {
   user: User | null;
-  isAuhenticated: boolean;
+  isAuthenticated: boolean;
   isLoading: boolean;
+  error: string | null
 }
 
 // blog post collection types
