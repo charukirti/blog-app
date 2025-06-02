@@ -1,3 +1,7 @@
+// theme types
+
+export type Theme = "light" | "dark" | "system";
+
 // auth slice types
 
 import type { Models } from "appwrite";

@@ -22,5 +22,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+*.txt
 .env*.local
 *.local
