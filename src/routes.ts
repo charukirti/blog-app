@@ -11,24 +11,33 @@ import NotFound from "./pages/NotFound";
 import { store } from "./store/store";
 import { authService } from "./services/authServices";
 import Dashboard from "./pages/Dashboard";
+import { setLoading } from "./store/authSlice";
+import Bookmarks from "./pages/Bookmarks";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 
 const checkAuthAndUpdateStore = async () => {
   const { auth } = store.getState();
   const { isAuthenticated, user } = auth;
 
-  if (isAuthenticated && user) {
+  if (isAuthenticated && user?.email) {
     return true;
   }
 
+  store.dispatch(setLoading(true));
+
   try {
     const currentUser = await authService.getCurrentUser();
-    if (currentUser) {
+    if (currentUser && user?.email) {
       return true;
     }
     return false;
   } catch (error) {
-    console.log(error)
+    store.dispatch(setLoading(false));
+    console.log(error);
     return false;
+  } finally {
+    store.dispatch(setLoading(false));
   }
 };
 
@@ -70,7 +79,7 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "create",
+        path: "write",
         Component: CreateBlog,
         loader: requireAuth,
       },
@@ -88,12 +97,18 @@ export const router = createBrowserRouter([
         path: "blog/:slug",
         Component: BlogPost,
       },
+      {
+        path: "/bookmarks",
+        Component: Bookmarks,
+        loader: requireAuth,
+      },
     ],
   },
 
   {
     path: "/auth",
     Component: AuthLayout,
+    HydrateFallback: () => null,
     children: [
       {
         path: "login",
@@ -103,6 +118,16 @@ export const router = createBrowserRouter([
       {
         path: "register",
         Component: RegisterForm,
+        loader: requireGuest,
+      },
+      {
+        path: "forgot-password",
+        Component: ForgotPassword,
+        loader: requireGuest,
+      },
+      {
+        path: "reset-password",
+        Component: ResetPassword,
         loader: requireGuest,
       },
     ],

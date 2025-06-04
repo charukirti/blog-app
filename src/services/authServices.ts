@@ -1,13 +1,36 @@
-import { ID } from "appwrite";
+import { ID, AppwriteException } from "appwrite";
 import { account } from "../lib/appwrite";
-import { clearUser, setError, setLoading, setUser } from "../store/authSlice";
+import {
+  clearError,
+  clearUser,
+  setError,
+  setLoading,
+  setUser,
+} from "../store/authSlice";
 import { store } from "../store/store";
 
 export const authService = {
+  async createAnonymousSession() {
+    try {
+      await account.createAnonymousSession();
+      return true;
+    } catch (error) {
+      console.log("Failed to create anonymous session:", error);
+      return false;
+    }
+  },
+
   async getCurrentUser() {
     try {
       store.dispatch(setLoading(true));
       const user = await account.get();
+
+      const isAnonymous = !user.email;
+
+      if (isAnonymous) {
+        store.dispatch(clearUser());
+        return null;
+      }
 
       store.dispatch(
         setUser({
@@ -18,9 +41,18 @@ export const authService = {
       );
 
       return user;
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof AppwriteException) {
+        if (error.code === 401) {
+          await this.createAnonymousSession();
+        }
+        store.dispatch(setError(error.message));
+      } else {
+        store.dispatch(setError("Something went wrong"));
+      }
+
       store.dispatch(clearUser());
-      store.dispatch(setError(error.message || "Something went wrong"));
+
       console.log(error);
       return null;
     } finally {
@@ -31,6 +63,13 @@ export const authService = {
   async login(email: string, password: string) {
     try {
       store.dispatch(setLoading(true));
+
+      try {
+        await account.deleteSession("current");
+      } catch (error) {
+        console.log(error);
+      }
+
       await account.createEmailPasswordSession(email, password);
       const user = await account.get();
 
@@ -42,10 +81,13 @@ export const authService = {
         }),
       );
 
+      store.dispatch(clearError());
+
       return user;
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof AppwriteException)
+        store.dispatch(setError(error.message || "Something went wrong"));
       store.dispatch(clearUser());
-      store.dispatch(setError(error.message || "Something went wrong"));
       throw error;
     } finally {
       store.dispatch(setLoading(false));
@@ -55,23 +97,81 @@ export const authService = {
   async register(name: string, email: string, password: string) {
     try {
       store.dispatch(setLoading(true));
+      try {
+        await account.deleteSession("current");
+      } catch (error) {
+        console.log(error);
+      }
+
       await account.create(ID.unique(), email, password, name);
+      store.dispatch(clearError());
       return await this.login(email, password);
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof AppwriteException)
+        store.dispatch(setError(error.message || "Something went wrong"));
       store.dispatch(clearUser());
-      store.dispatch(setError(error.message || "Something went wrong"));
       throw error;
     } finally {
       store.dispatch(setLoading(false));
     }
   },
+
+  async recoverPassword(email: string) {
+    try {
+      store.dispatch(setLoading(true));
+      const recoveryUrl = `${window.location.origin}/auth/reset-password`;
+      await account.createRecovery(email, recoveryUrl);
+
+      return {
+        success: true,
+        message: "Password recovery email sent successfully",
+      };
+    } catch (error) {
+      if (error instanceof AppwriteException) {
+        store.dispatch(
+          setError(error.message || "Failed to send recovery email"),
+        );
+      }
+      console.log("Password recovery error:", error);
+
+      throw error;
+    } finally {
+      store.dispatch(setLoading(false));
+    }
+  },
+
+  async resetPassword(userId: string, secret: string, password: string) {
+    try {
+      store.dispatch(setLoading(true));
+
+      if (!password.length || password.length < 8) {
+        throw new Error("New password must be at least 8 characters long");
+      }
+
+      await account.updateRecovery(userId, secret, password);
+
+      return {
+        success: true,
+        message: "Password updated successfully",
+      };
+    } catch (error) {
+      console.log(error);
+      store.dispatch(setError("Failed to reset password!"));
+
+      throw error;
+    } finally {
+      store.dispatch(setLoading(false));
+    }
+  },
+
   async logOut() {
     try {
       await account.deleteSession("current");
       store.dispatch(clearUser());
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof AppwriteException)
+        store.dispatch(setError(error.message || "Something went wrong"));
       store.dispatch(clearUser());
-      store.dispatch(setError(error.message || "Something went wrong"));
       throw error;
     }
   },
