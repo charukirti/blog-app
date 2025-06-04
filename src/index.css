@@ -59,7 +59,7 @@
 
 @theme {
   --font-source-serif: "Source Serif", serif;
-  --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
 @custom-variant dark (&:is(.dark *));
