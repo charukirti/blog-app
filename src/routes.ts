@@ -11,7 +11,6 @@ import NotFound from "./pages/NotFound";
 import { store } from "./store/store";
 import { authService } from "./services/authServices";
 import Dashboard from "./pages/Dashboard";
-import { setLoading } from "./store/authSlice";
 import Bookmarks from "./pages/Bookmarks";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPassword from "./components/auth/ResetPassword";
@@ -24,20 +23,15 @@ const checkAuthAndUpdateStore = async () => {
     return true;
   }
 
-  store.dispatch(setLoading(true));
-
   try {
     const currentUser = await authService.getCurrentUser();
-    if (currentUser && user?.email) {
+    if (currentUser && currentUser?.email) {
       return true;
     }
     return false;
   } catch (error) {
-    store.dispatch(setLoading(false));
     console.log(error);
     return false;
-  } finally {
-    store.dispatch(setLoading(false));
   }
 };
 
@@ -98,7 +92,7 @@ export const router = createBrowserRouter([
         Component: BlogPost,
       },
       {
-        path: "/bookmarks",
+        path: "bookmarks",
         Component: Bookmarks,
         loader: requireAuth,
       },

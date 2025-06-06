@@ -10,27 +10,10 @@ import {
 import { store } from "../store/store";
 
 export const authService = {
-  async createAnonymousSession() {
-    try {
-      await account.createAnonymousSession();
-      return true;
-    } catch (error) {
-      console.log("Failed to create anonymous session:", error);
-      return false;
-    }
-  },
-
   async getCurrentUser() {
     try {
       store.dispatch(setLoading(true));
       const user = await account.get();
-
-      const isAnonymous = !user.email;
-
-      if (isAnonymous) {
-        store.dispatch(clearUser());
-        return null;
-      }
 
       store.dispatch(
         setUser({
@@ -44,7 +27,8 @@ export const authService = {
     } catch (error) {
       if (error instanceof AppwriteException) {
         if (error.code === 401) {
-          await this.createAnonymousSession();
+          store.dispatch(clearUser());
+          return null;
         }
         store.dispatch(setError(error.message));
       } else {
