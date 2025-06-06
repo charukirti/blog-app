@@ -16,7 +16,7 @@ export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  error: string | null
+  error: string | null;
 }
 
 // blog post collection types
@@ -33,6 +33,7 @@ export interface Blog extends Models.Document {
   tags: string[];
   comments: Comments[];
   likes: number;
+  category: string;
 }
 
 export interface Comments {
@@ -43,14 +44,15 @@ export interface Comments {
   blog_id: string;
 }
 
-export interface CreateBlog  {
-  $id: string;
-  title: string;
-  slug: string;
-  content: string;
-  description: string;
-  author_id: string;
-  author_name: string;
-  featured_image: string;
+export interface CreateBlog {
+  $id: string | undefined;
+  title: string | undefined;
+  slug: string | undefined;
+  content: string | undefined;
+  description: string | undefined;
+  author_id: string | undefined;
+  author_name: string | undefined;
+  featured_image: string | undefined;
   tags: string[];
+  category: string;
 }
