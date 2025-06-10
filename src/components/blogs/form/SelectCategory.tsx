@@ -1,5 +1,5 @@
 import type { FieldError, UseFormRegisterReturn } from "react-hook-form";
-import { Label } from "../ui/label";
+import { Label } from "../../ui/label";
 
 const categories = [
   { value: "technology", label: "Technology" },
@@ -10,6 +10,11 @@ const categories = [
   { value: "food", label: "Food & Cooking" },
   { value: "health", label: "Health & Fitness" },
   { value: "education", label: "Education" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "sports", label: "Sports" },
+  { value: "finance", label: "Finance" },
+  { value: "productivity", label: "Productivity" },
+  { value: "other", label: "Other" },
 ];
 
 interface SelectCategoryProps {

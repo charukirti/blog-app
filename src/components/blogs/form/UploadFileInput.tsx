@@ -1,6 +1,6 @@
 import type { FieldError, UseFormRegisterReturn } from "react-hook-form";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
 
 interface UploadFileInputProps {
   label: string;
@@ -31,8 +31,16 @@ export default function UploadFileInput({
         id={id}
         accept={accept}
         type="file"
-        {...register}
-        className="mt-1 text-base tracking-wider file:mr-4 file:rounded-md file:border-0 file:bg-gray-50 dark:file:bg-gray-600 file:px-4  file:font-medium hover:file:bg-gray-100"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          register.onChange({
+            target: {
+              name: register.name,
+              value: file,
+            },
+          });
+        }}
+        className="mt-1 text-base tracking-wider file:mr-4 file:rounded-md file:border-0 file:bg-gray-50 file:px-4 file:font-medium hover:file:bg-gray-100 dark:file:bg-gray-600"
       />
       {helperText && !error && (
         <p className="mt-1 text-sm text-gray-500">{helperText}</p>

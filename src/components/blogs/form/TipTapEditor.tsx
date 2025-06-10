@@ -3,7 +3,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useController, type Control, type FieldError } from "react-hook-form";
-import { Label } from "./ui/label";
+
 import {
   Bold,
   Code,
@@ -19,10 +19,12 @@ import {
   Strikethrough,
   Undo,
 } from "lucide-react";
+import type { CreateBlogFormData } from "@/schemas/blogSchemas";
+import { Label } from "@/components/ui/label";
 
 interface TiptapEditorProps {
-  control: Control<any>;
-  name: string;
+  control: Control<CreateBlogFormData>;
+  name: keyof CreateBlogFormData;
   label: string;
   placeholder?: string;
   error?: FieldError;
@@ -45,6 +47,14 @@ export default function TipTapEditor({
     defaultValue: "",
   });
 
+  const getEditorContent = (): string => {
+    if (typeof value === "string") {
+      return value;
+    }
+
+    return "";
+  };
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -56,7 +66,7 @@ export default function TipTapEditor({
         },
       }),
     ],
-    content: value,
+    content: getEditorContent(),
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
@@ -270,9 +280,9 @@ export default function TipTapEditor({
           >
             <Redo size={16} />
           </button>
-          <button onClick={() => console.log(editor.getHTML())} type="button">
+          {/* <button onClick={() => console.log(editor.getHTML())} type="button">
             Debug HTML
-          </button>
+          </button> */}
         </div>
 
         <EditorContent

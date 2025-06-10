@@ -1,8 +1,8 @@
 import { useState, type KeyboardEvent } from "react";
 import { useController, type Control, type FieldError } from "react-hook-form";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import { X } from "lucide-react";
 
 interface AddTagsField {

@@ -1,6 +1,6 @@
 import type { FieldError, UseFormRegisterReturn } from "react-hook-form";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
+import { Label } from "../../ui/label";
+import { Textarea } from "../../ui/textarea";
 
 interface DescriptionBoxProps {
   label: string;
