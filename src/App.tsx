@@ -9,7 +9,7 @@ export default function App() {
   return (
     <>
       <ThemeProvider>
-        {isLoading ? <Loader /> : <RouterProvider router={router} />}
+       {isLoading ? <Loader /> : <RouterProvider router={router} />}
       </ThemeProvider>
     </>
   );

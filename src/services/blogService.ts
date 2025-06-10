@@ -6,6 +6,15 @@ import { storageService } from "./storageService";
 export const blogService = {
   async getPosts() {
     return await databases.listDocuments(DATABASE_ID, COLLECTIONS.BLOGS, [
+      Query.equal("status", "published"),
+      Query.orderDesc("$createdAt"),
+    ]);
+  },
+
+
+  async getDraftPosts() {
+    return await databases.listDocuments(DATABASE_ID, COLLECTIONS.BLOGS, [
+      Query.equal("status", "draft"),
       Query.orderDesc("$createdAt"),
     ]);
   },
@@ -24,6 +33,7 @@ export const blogService = {
           ...data,
           likes: null,
           comments: null,
+          status: data.status || "publish",
         },
       );
     } catch (error) {
@@ -81,6 +91,14 @@ export const blogService = {
 
       throw error;
     }
+  },
+
+  async publishDraftPost(id: string) {
+    return await this.updateBlog(id, { status: "published" });
+  },
+
+  async unpublishPost(id: string) {
+    return await this.updateBlog(id, { status: "draft" });
   },
 
   async deleteBlog(id: string) {

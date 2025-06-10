@@ -8,7 +8,6 @@ export function useGetPosts() {
   return useQuery({
     queryKey: blogKeys.posts(),
     queryFn: blogService.getPosts,
-    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -17,6 +16,13 @@ export function useGetPostBySlug(slug: string) {
     queryKey: blogKeys.postBySlug(slug),
     queryFn: () => blogService.getPostBySlug(slug),
     enabled: !!slug,
+  });
+}
+
+export function useGetDraftPosts() {
+  return useQuery({
+    queryKey: blogKeys.draftPosts(),
+    queryFn: blogService.getDraftPosts,
   });
 }
 
@@ -31,6 +37,60 @@ export function useAddBlog() {
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create blog");
+    },
+  });
+}
+
+export function usePublishDraft() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => blogService.publishDraftPost(id),
+    onSuccess: (updatedBlog) => {
+      queryClient.invalidateQueries({ queryKey: blogKeys.draftPosts() });
+      queryClient.invalidateQueries({ queryKey: blogKeys.posts() });
+      queryClient.invalidateQueries({
+        queryKey: blogKeys.post(updatedBlog.$id),
+      });
+      toast.success("Post published successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to publish draft");
+    },
+  });
+}
+
+export function useUnpublishPost() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => blogService.unpublishPost(id),
+    onSuccess: (updatedBlog) => {
+      queryClient.invalidateQueries({ queryKey: blogKeys.draftPosts() });
+      queryClient.invalidateQueries({ queryKey: blogKeys.posts() });
+      queryClient.invalidateQueries({
+        queryKey: blogKeys.post(updatedBlog.$id),
+      });
+      toast.success("Post moved to drafts successfully!");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to unpublish blog");
+    },
+  });
+}
+
+export function useSaveDraft() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateBlog) =>
+      blogService.addBlog({ ...data, status: "draft" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: blogKeys.draftPosts() });
+      toast.success("Draft saved successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to save draft");
     },
   });
 }
@@ -68,6 +128,9 @@ export function useDeleteBlog() {
       });
       queryClient.invalidateQueries({
         queryKey: blogKeys.posts(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: blogKeys.draftPosts(),
       });
     },
     onError: (error) => {
