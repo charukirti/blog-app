@@ -45,7 +45,7 @@ export interface Comments {
 }
 
 export interface CreateBlog {
-  $id: string | undefined;
+  $id?: string | undefined;
   title: string | undefined;
   slug: string | undefined;
   content: string | undefined;
@@ -53,6 +53,7 @@ export interface CreateBlog {
   author_id: string | undefined;
   author_name: string | undefined;
   featured_image: string | undefined;
-  tags: string[];
+  tags: string[] | undefined;
   category: string;
+  status: 'draft' | 'published';
 }
