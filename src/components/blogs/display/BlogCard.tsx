@@ -1,0 +1,85 @@
+import type { Blog } from "@/types";
+import Avatar from "./Avatar";
+import { calculateReadTime } from "@/utils/calculateReadTime";
+import { Calendar, Clock, Heart, MessageCircle } from "lucide-react";
+import { formatDate } from "@/utils/formatDate";
+import { Link } from "react-router";
+
+interface BlogCardProps {
+  blog: Blog;
+}
+
+export default function BlogCard({ blog }: BlogCardProps) {
+  const readingTime = calculateReadTime(blog.content);
+  return (
+    <Link to={`/blog/${blog.slug}`}>
+      <article
+        aria-label="blog-card"
+        className="mb-5 flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md md:flex-row dark:border-gray-700 dark:bg-gray-800"
+      >
+        <section className="w-80 shrink-0 p-3">
+          <img
+            src={blog.featured_image}
+            className="h-48 w-full rounded-xl transition-transform duration-300 hover:scale-105"
+          />
+        </section>
+        <section className="flex flex-col gap-3 p-6">
+          <div className="flex-1">
+            <div className="mb-4 flex flex-wrap gap-2">
+              {blog.tags.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+                >
+                  {tag}
+                </span>
+              ))}
+              {blog.tags.length > 3 && (
+                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                  +{blog.tags.length - 3} more
+                </span>
+              )}
+            </div>
+
+            <div className="mb-4 flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+              <Clock className="h-4 w-4" />
+              <span>{readingTime} min read</span>
+            </div>
+            <h3 className="mb-2 line-clamp-2 cursor-pointer text-xl font-bold text-gray-900 transition-colors hover:text-green-600 dark:text-white dark:hover:text-green-400">
+              {blog.title}
+            </h3>
+            <p className="mb-2 line-clamp-2 leading-relaxed text-gray-600 dark:text-gray-300">
+              {blog.description}
+            </p>
+          </div>
+
+          <footer className="flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-700">
+            <div className="flex items-center gap-3">
+              <Avatar name={blog.author_name} />
+              <div>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-400">
+                  {blog.author_name}
+                </p>
+                <p className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                  <Calendar className="h-3 w-3" />
+                  {formatDate(blog.$createdAt)}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <span className="flex items-center gap-1">
+                <Heart className="h-4 w-4" />
+                {blog.likes ?? 0}
+              </span>
+              <span className="flex items-center gap-1">
+                <MessageCircle className="h-4 w-4" />
+                {blog.comments?.length ?? 0}
+              </span>
+            </div>
+          </footer>
+        </section>
+      </article>
+    </Link>
+  );
+}
