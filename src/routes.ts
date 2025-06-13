@@ -73,27 +73,37 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "write",
+        path: "dashboard",
+        Component: Dashboard,
+        loader: requireAuth,
+      },
+
+      {
+        path: "bookmarks",
+        Component: Bookmarks,
+        loader: requireAuth,
+      },
+    ],
+  },
+
+  {
+    path: "/blog",
+    Component: RootLayout,
+    loader: restoreAuthState,
+    HydrateFallback: () => null,
+    children: [
+      {
+        path: ":slug",
+        Component: BlogPost,
+      },
+      {
+        path: "new",
         Component: CreateBlog,
         loader: requireAuth,
       },
       {
         path: "edit/:id",
         Component: EditBlog,
-        loader: requireAuth,
-      },
-      {
-        path: "dashboard",
-        Component: Dashboard,
-        loader: requireAuth,
-      },
-      {
-        path: "blog/:slug",
-        Component: BlogPost,
-      },
-      {
-        path: "bookmarks",
-        Component: Bookmarks,
         loader: requireAuth,
       },
     ],
