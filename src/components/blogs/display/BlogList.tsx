@@ -8,11 +8,16 @@ interface BlogListProp {
 export default function BlogList({ blogs }: BlogListProp) {
   return (
     <main>
-      <h1 className="mb-5 text-4xl font-extrabold uppercase">All blogs</h1>
       <section aria-label="blog-list">
-        {blogs.map((blog) => (
-          <BlogCard key={blog.$id} blog={blog} />
-        ))}
+        {blogs.length > 0 ? (
+          blogs.map((blog) => <BlogCard key={blog.$id} blog={blog} />)
+        ) : (
+          <div className="py-12 text-center">
+            <p className="text-lg text-gray-500 dark:text-gray-300">
+              No blogs found in the selected category.
+            </p>
+          </div>
+        )}
       </section>
     </main>
   );
