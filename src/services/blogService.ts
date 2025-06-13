@@ -11,11 +11,22 @@ export const blogService = {
     ]);
   },
 
-
   async getDraftPosts() {
     return await databases.listDocuments(DATABASE_ID, COLLECTIONS.BLOGS, [
       Query.equal("status", "draft"),
       Query.orderDesc("$createdAt"),
+    ]);
+  },
+
+  async getSearchResults(query: string) {
+    if (!query || query.trim().length < 5) {
+      return { documents: [], total: 0 };
+    }
+    return await databases.listDocuments(DATABASE_ID, COLLECTIONS.BLOGS, [
+      Query.search("title", query.trim()),
+      Query.equal("status", "published"),
+      Query.orderDesc("$createdAt"),
+      Query.limit(6),
     ]);
   },
 

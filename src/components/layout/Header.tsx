@@ -4,7 +4,15 @@ import { useAppDispatch, useAppSelector } from "@/store/typedHooks";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import ThemeToggle from "./ThemeToggle";
-import { Bookmark, LayoutDashboard, LogOut, SquarePen } from "lucide-react";
+import {
+  Bookmark,
+  LayoutDashboard,
+  LogOut,
+  SquarePen,
+  Search,
+  X,
+  Menu,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -14,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import SearchBar from "../ui/SearchBar";
 
 interface HeaderProps {
   variant?: "rootLayout" | "authLayout";
@@ -22,6 +31,7 @@ interface HeaderProps {
 export default function Header({ variant }: HeaderProps) {
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -91,134 +101,157 @@ export default function Header({ variant }: HeaderProps) {
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-gray-800 dark:bg-gray-900/95 dark:supports-[backdrop-filter]:bg-gray-900/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link
-            to="/"
-            className="text-2xl font-bold text-gray-900 dark:text-gray-200"
-          >
-            Bloggify
-          </Link>
+          {!isMobileSearchOpen && (
+            <Link
+              to="/"
+              className="text-2xl font-bold text-gray-900 dark:text-gray-200"
+            >
+              Bloggify
+            </Link>
+          )}
 
-          <div className="hidden items-center gap-3 md:flex">
-            {isUser ? (
-              <>
-                <Link to={"/write"}>
-                  <SquarePen className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-                </Link>
+          {isMobileSearchOpen && (
+            <div className="flex flex-1 items-center gap-2 md:hidden">
+              <div className="flex-1">
+                <SearchBar />
+              </div>
+              <button
+                onClick={() => setIsMobileSearchOpen(false)}
+                className="p-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          )}
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant={"ghost"}
-                      className="font-poppins relative h-8 w-8 cursor-pointer rounded-full text-base font-semibold ring hover:ring-green-200"
-                    >
-                      {user?.name?.charAt(0).toUpperCase() || "U"}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="end"
-                    className="mt-4 w-56"
-                    forceMount
-                  >
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="font-poppins text-sm leading-none font-medium">
-                          {user?.name || "User"}
-                        </p>
-                        <p className="text-muted-foreground font-poppins text-xs leading-none">
-                          {user?.email || "user@example.com"}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard">
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        Dashboard
-                      </Link>
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem asChild>
-                      <Link to="/bookmarks">
-                        <Bookmark className="mr-2 h-4 w-4" />
-                        Bookmarks
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="p-0"
-                      onSelect={(e) => e.preventDefault()}
-                    >
-                      <div className="flex w-full items-center justify-between px-2 py-1.5">
-                        <span className="font-poppins text-base">Theme</span>
-                        <ThemeToggle inDropdown={true} />
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleLogout}
-                      className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : (
-              <>
-                <Link to={"/auth/login"}>
-                  <Button
-                    variant={"outline"}
-                    className="font-poppins cursor-pointer rounded-full"
-                    size={"lg"}
-                  >
-                    Start Writing
-                  </Button>
-                </Link>
-                <ThemeToggle />
-              </>
-            )}
+          <div className="hidden md:block">
+            <SearchBar />
           </div>
 
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 md:hidden"
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={
-                  isMobileMenuOpen
-                    ? "M6 18L18 6M6 6l12 12"
-                    : "M4 6h16M4 12h16M4 18h16"
-                }
-              />
-            </svg>
-          </button>
+          {!isMobileSearchOpen && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsMobileSearchOpen(true)}
+                className="p-2 text-gray-600 hover:text-gray-900 md:hidden dark:text-gray-300 dark:hover:text-white"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+
+              <div className="hidden items-center gap-3 md:flex">
+                {isUser ? (
+                  <>
+                    <Link to={"/blog/new"}>
+                      <SquarePen className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+                    </Link>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant={"ghost"}
+                          className="font-poppins relative h-8 w-8 cursor-pointer rounded-full text-base font-semibold ring hover:ring-green-200"
+                        >
+                          {user?.name?.charAt(0).toUpperCase() || "U"}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="mt-4 w-56"
+                        forceMount
+                      >
+                        <DropdownMenuLabel className="font-normal">
+                          <div className="flex flex-col space-y-1">
+                            <p className="font-poppins text-sm leading-none font-medium">
+                              {user?.name || "User"}
+                            </p>
+                            <p className="text-muted-foreground font-poppins text-xs leading-none">
+                              {user?.email || "user@example.com"}
+                            </p>
+                          </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link to="/dashboard">
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            Dashboard
+                          </Link>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem asChild>
+                          <Link to="/bookmarks">
+                            <Bookmark className="mr-2 h-4 w-4" />
+                            Bookmarks
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="p-0"
+                          onSelect={(e) => e.preventDefault()}
+                        >
+                          <div className="flex w-full items-center justify-between px-2 py-1.5">
+                            <span className="font-poppins text-base">
+                              Theme
+                            </span>
+                            <ThemeToggle inDropdown={true} />
+                          </div>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={handleLogout}
+                          className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Logout
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
+                ) : (
+                  <>
+                    <Link to={"/auth/login"}>
+                      <Button
+                        variant={"outline"}
+                        className="font-poppins cursor-pointer rounded-full"
+                        size={"lg"}
+                      >
+                        Start Writing
+                      </Button>
+                    </Link>
+                    <ThemeToggle />
+                  </>
+                )}
+              </div>
+
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 md:hidden"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
+          )}
         </div>
 
-        {isMobileMenuOpen && (
+        {isMobileMenuOpen && !isMobileSearchOpen && (
           <div className="border-t border-gray-200 py-4 md:hidden dark:border-gray-800">
-            <nav className="flex flex-col items-center space-y-4">
+            <nav className="flex flex-col space-y-4">
               {isUser ? (
                 <>
                   <Link
-                    to="/write"
+                    to="/blog/new"
                     className="flex items-center gap-2 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <SquarePen className="h-4 w-4" />
-                    Write
+                    Write post
                   </Link>
                   <Link
                     to="/dashboard"
                     className="flex items-center gap-2 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     Dashboard
@@ -227,6 +260,7 @@ export default function Header({ variant }: HeaderProps) {
                   <Link
                     to="/bookmarks"
                     className="flex items-center gap-2 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <Bookmark className="h-4 w-4" />
                     Bookmarks
@@ -250,12 +284,14 @@ export default function Header({ variant }: HeaderProps) {
                   <Link
                     to="/auth/login"
                     className="text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/auth/register"
                     className="text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign Up
                   </Link>

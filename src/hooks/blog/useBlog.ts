@@ -3,6 +3,7 @@ import type { CreateBlog } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { blogKeys } from "./blogKeys";
 import { toast } from "react-toastify";
+import { useDebounced } from "../useDebounced";
 
 export function useGetPosts() {
   return useQuery({
@@ -16,6 +17,18 @@ export function useGetPostBySlug(slug: string) {
     queryKey: blogKeys.postBySlug(slug),
     queryFn: () => blogService.getPostBySlug(slug),
     enabled: !!slug,
+  });
+}
+
+export function useSearchPosts(searchTerm: string) {
+  const debouncedSearch = useDebounced(searchTerm, 400);
+
+  return useQuery({
+    queryKey: blogKeys.search(debouncedSearch),
+    queryFn: () => blogService.getSearchResults(debouncedSearch),
+    enabled: debouncedSearch.length >= 5,
+    staleTime: 5 * 60 * 1000,
+    select: (data) => data.documents,
   });
 }
 
