@@ -1,5 +1,5 @@
 import type { Blog } from "@/types";
-import Avatar from "./Avatar";
+import Avatar from "../common/Avatar";
 import { calculateReadTime } from "@/utils/calculateReadTime";
 import { Calendar, Clock, Heart, MessageCircle } from "lucide-react";
 import { formatDate } from "@/utils/formatDate";

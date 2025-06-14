@@ -1,5 +1,5 @@
-import BlogList from "@/components/blogs/display/BlogList";
-import CategoryDropdown from "@/components/blogs/display/CategoryDropdown";
+import BlogList from "@/components/blogs/list/BlogList";
+import CategoryDropdown from "@/components/blogs/list/CategoryDropdown";
 
 import Loader from "@/components/Loader";
 import { useGetPosts } from "@/hooks/blog/useBlog";
