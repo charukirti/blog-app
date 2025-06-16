@@ -42,8 +42,6 @@ export const blogService = {
         ID.unique(),
         {
           ...data,
-          likes: null,
-          comments: null,
           status: data.status || "publish",
         },
       );
