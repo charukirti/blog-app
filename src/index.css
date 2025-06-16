@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: "Source Serif";
-  src: url('../src/assets/fonts/SourceSerif4-Regular.ttf');
+  src: url("../src/assets/fonts/SourceSerif4-Regular.ttf");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -11,7 +11,7 @@
 
 @font-face {
   font-family: "Source Serif";
-  src: url('../src/assets/fonts/SourceSerif4-SemiBold.ttf');
+  src: url("../src/assets/fonts/SourceSerif4-SemiBold.ttf");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -19,7 +19,7 @@
 
 @font-face {
   font-family: "Source Serif";
-  src: url('../src/assets/fonts/SourceSerif4-Bold.ttf');
+  src: url("../src/assets/fonts/SourceSerif4-Bold.ttf");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -27,7 +27,7 @@
 
 @font-face {
   font-family: "Poppins";
-  src: url('../src/assets/fonts/Poppins-Regular.ttf');
+  src: url("../src/assets/fonts/Poppins-Regular.ttf");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -35,7 +35,7 @@
 
 @font-face {
   font-family: "Poppins";
-  src: url('../src/assets/fonts/Poppins-Medium.ttf');
+  src: url("../src/assets/fonts/Poppins-Medium.ttf");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -43,7 +43,7 @@
 
 @font-face {
   font-family: "Poppins";
-  src: url('../src/assets/fonts/Poppins-SemiBold.ttf');
+  src: url("../src/assets/fonts/Poppins-SemiBold.ttf");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -51,7 +51,7 @@
 
 @font-face {
   font-family: "Poppins";
-  src: url('../src/assets/fonts/Poppins-Bold.ttf');
+  src: url("../src/assets/fonts/Poppins-Bold.ttf");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -178,4 +178,70 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.tiptap-content.ProseMirror {
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.tiptap-content h1 {
+  @apply font-source-serif text-foreground mt-8 mb-6 text-4xl font-bold;
+}
+
+.tiptap-content h2 {
+  @apply font-source-serif text-foreground mt-6 mb-4 text-3xl font-semibold;
+}
+
+.tiptap-content h3 {
+  @apply font-source-serif text-foreground mt-6 mb-4 text-2xl font-medium;
+}
+
+.tiptap-content p {
+  @apply font-source-serif text-foreground/90 mb-4 text-xl leading-relaxed;
+}
+
+.tiptap-content ul {
+  @apply font-source-serif text-foreground/90 mb-4 ml-6 list-outside list-disc space-y-1;
+}
+
+.tiptap-content ol {
+  @apply font-source-serif text-foreground/90 mb-4 ml-6 list-outside list-decimal space-y-1;
+}
+
+.tiptap-content li {
+  @apply text-foreground/90;
+}
+
+.tiptap-content pre {
+  @apply bg-muted text-foreground mb-6 overflow-x-auto rounded-lg p-4 font-mono text-sm;
+}
+
+.tiptap-content code {
+  @apply bg-muted rounded px-2 py-1 font-mono text-sm;
+}
+
+.tiptap-content strong {
+  @apply font-source-serif text-foreground font-bold;
+}
+
+.tiptap-content em {
+  @apply font-source-serif text-foreground/80 italic;
+}
+
+.tiptap-content li p {
+  @apply font-source-serif mb-2;
+}
+
+.tiptap-content blockquote {
+  @apply border-primary text-foreground/80 border-l-4 pl-4 italic;
+}
+
+.tiptap-content a {
+  @apply text-primary underline-offset-4 hover:underline;
+}
+
+.tiptap-content hr {
+  @apply border-border;
 }
