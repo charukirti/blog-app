@@ -9,7 +9,7 @@ export function useHasUserLiked(blogId: string, userId: string) {
     queryKey: likeKeys.hasLiked(blogId, userId),
     queryFn: () => LikeService.hasUserLiked(blogId, userId),
     enabled: !!blogId && !!userId,
-    staleTime: 30 * 1000,
+    staleTime: 5 * 60 * 1000,
   });
 }
 

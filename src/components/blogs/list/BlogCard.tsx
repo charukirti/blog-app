@@ -5,6 +5,7 @@ import { Calendar, Clock, Heart, MessageCircle } from "lucide-react";
 import { formatDate } from "@/utils/formatDate";
 import { Link } from "react-router";
 import { useGetLikeCount } from "@/hooks/Likes/useLikes";
+import { useGetCommentsCount } from "@/hooks/comments/useComments";
 
 interface BlogCardProps {
   blog: Blog;
@@ -12,7 +13,8 @@ interface BlogCardProps {
 
 export default function BlogCard({ blog }: BlogCardProps) {
   const readingTime = calculateReadTime(blog.content);
-  const {data: likeCount = 0} = useGetLikeCount(blog.$id) 
+  const { data: likeCount = 0 } = useGetLikeCount(blog.$id);
+  const { data: commentCount } = useGetCommentsCount(blog.$id);
   return (
     <Link to={`/blog/${blog.slug}`}>
       <article
@@ -77,7 +79,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
               </span>
               <span className="flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" />
-                {blog.comments?.length ?? 0}
+                {commentCount ?? 0}
               </span>
             </div>
           </footer>

@@ -22,7 +22,6 @@ export interface AuthState {
 // blog post collection types
 
 export interface Blog extends Models.Document {
-  $id: string;
   title: string;
   slug: string;
   content: string;
@@ -36,12 +35,20 @@ export interface Blog extends Models.Document {
   category: string;
 }
 
-export interface Comments {
-  $id: string;
-  content: string;
-  author_id: string;
-  username: string;
+export interface CreateCommentInput {
   blog_id: string;
+  user_id: string;
+  username: string;
+  content: string;
+  parent_id?: string;
+}
+
+export interface Comments extends Models.Document {
+  blog_id: string;
+  user_id: string;
+  username: string;
+  content: string;
+  parent_id?: string;
 }
 
 export interface CreateBlog {
@@ -55,5 +62,5 @@ export interface CreateBlog {
   featured_image: string | undefined;
   tags: string[] | undefined;
   category: string;
-  status: 'draft' | 'published';
+  status: "draft" | "published";
 }
