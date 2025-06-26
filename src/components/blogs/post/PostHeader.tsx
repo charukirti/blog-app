@@ -4,7 +4,8 @@ import GoBack from "./GoBack";
 import { formatDate } from "@/utils/formatDate";
 import LikeButton from "../common/LikeButton";
 import { useAppSelector } from "@/store/typedHooks";
-import { BookmarkPlus, MessageCircle, Share } from "lucide-react";
+import { BookmarkPlus, MessageCircle } from "lucide-react";
+import SocialShare from "./SocialShare";
 
 interface PostHeaderProps {
   blogId: string;
@@ -49,7 +50,7 @@ export default function PostHeader({
 
         <div className="flex items-center gap-4">
           <BookmarkPlus />
-          <Share />
+          <SocialShare title={title} />
         </div>
       </div>
     </header>
