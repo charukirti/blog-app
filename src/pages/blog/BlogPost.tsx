@@ -6,10 +6,13 @@ import { TipTapRenderer } from "@/components/blogs/post/TipTapRenderer";
 import ThumbnailComponent from "@/components/blogs/post/ThumbnailComponent";
 import CommentForm from "@/components/comments/CommentForm";
 import CommentList from "@/components/comments/CommentList";
+import { useIncrementViews } from "@/hooks/blog/useIncrementViews";
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
 
   const { data: post, isLoading, error } = useGetPostBySlug(slug || "");
+
+  useIncrementViews(post?.$id)
 
   if (!slug) return <div>No post found</div>;
 

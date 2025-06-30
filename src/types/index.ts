@@ -31,8 +31,8 @@ export interface Blog extends Models.Document {
   featured_image: string;
   tags: string[];
   comments: Comments[];
-  likes: number;
-  category: string;
+  views?: number;
+  status: "draft" | "published";
 }
 
 export interface CreateCommentInput {

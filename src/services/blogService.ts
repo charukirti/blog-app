@@ -11,13 +11,6 @@ export const blogService = {
     ]);
   },
 
-  async getDraftPosts() {
-    return await databases.listDocuments(DATABASE_ID, COLLECTIONS.BLOGS, [
-      Query.equal("status", "draft"),
-      Query.orderDesc("$createdAt"),
-    ]);
-  },
-
   async getSearchResults(query: string) {
     if (!query || query.trim().length < 5) {
       return { documents: [], total: 0 };
@@ -100,6 +93,17 @@ export const blogService = {
 
       throw error;
     }
+  },
+
+  async incrementBlogView(id: string ) {
+    const blog = await databases.getDocument(
+      DATABASE_ID,
+      COLLECTIONS.BLOGS,
+      id,
+    );
+    return await databases.updateDocument(DATABASE_ID, COLLECTIONS.BLOGS, id, {
+      views: (blog.views ?? 0) + 1,
+    });
   },
 
   async publishDraftPost(id: string) {

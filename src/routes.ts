@@ -10,10 +10,12 @@ import RegisterForm from "./components/auth/RegisterForm";
 import NotFound from "./pages/NotFound";
 import { store } from "./store/store";
 import { authService } from "./services/authServices";
-import Dashboard from "./pages/Dashboard";
-import Bookmarks from "./pages/Bookmarks";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Bookmarks from "./pages/dashboard/Bookmarks";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPassword from "./components/auth/ResetPassword";
+import DashboardLayout from "./layouts/DashboardLayout";
+import Analytics from "./pages/dashboard/Analytics";
 
 const checkAuthAndUpdateStore = async () => {
   const { auth } = store.getState();
@@ -71,18 +73,6 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
-
-      {
-        path: "dashboard",
-        Component: Dashboard,
-        loader: requireAuth,
-      },
-
-      {
-        path: "bookmarks",
-        Component: Bookmarks,
-        loader: requireAuth,
-      },
     ],
   },
 
@@ -105,6 +95,27 @@ export const router = createBrowserRouter([
         path: "edit/:id",
         Component: EditBlog,
         loader: requireAuth,
+      },
+    ],
+  },
+
+  {
+    path: "/dashboard",
+    Component: DashboardLayout,
+    loader: requireAuth,
+    HydrateFallback: () => null,
+    children: [
+      {
+        index: true,
+        Component: Dashboard,
+      },
+      {
+        path: "bookmarks",
+        Component: Bookmarks,
+      },
+      {
+        path: "analytics",
+        Component: Analytics,
       },
     ],
   },

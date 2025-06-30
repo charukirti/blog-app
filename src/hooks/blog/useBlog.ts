@@ -32,13 +32,6 @@ export function useSearchPosts(searchTerm: string) {
   });
 }
 
-export function useGetDraftPosts() {
-  return useQuery({
-    queryKey: blogKeys.draftPosts(),
-    queryFn: blogService.getDraftPosts,
-  });
-}
-
 export function useAddBlog() {
   const queryClient = useQueryClient();
 

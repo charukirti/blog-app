@@ -2,13 +2,11 @@ import { COLLECTIONS, DATABASE_ID, databases } from "@/lib/appwrite";
 import type { Comments, CreateCommentInput } from "@/types";
 import { ID, Query } from "appwrite";
 
-// Define the return type for list operations
 interface CommentsListResponse {
   documents: Comments[];
   total: number;
 }
 
-// Define the return type for comments with replies
 interface CommentWithReplies extends Comments {
   replies: Comments[];
   repliesCount: number;
@@ -41,7 +39,10 @@ export const commentService = {
     }
   },
 
-  async updateComment(commentId: string, newContent: string): Promise<Comments> {
+  async updateComment(
+    commentId: string,
+    newContent: string,
+  ): Promise<Comments> {
     try {
       const response = await databases.updateDocument(
         DATABASE_ID,
@@ -144,19 +145,23 @@ export const commentService = {
     }
   },
 
-  async getBlogCommentsWithReplies(blogId: string): Promise<CommentsWithRepliesResponse> {
+  async getBlogCommentsWithReplies(
+    blogId: string,
+  ): Promise<CommentsWithRepliesResponse> {
     try {
       const topLevelComments = await this.getBlogComments(blogId);
 
       const commentWithReply = await Promise.all(
-        topLevelComments.documents.map(async (comment): Promise<CommentWithReplies> => {
-          const replies = await this.getCommentReplies(comment.$id);
-          return {
-            ...comment,
-            replies: replies.documents,
-            repliesCount: replies.total,
-          };
-        }),
+        topLevelComments.documents.map(
+          async (comment): Promise<CommentWithReplies> => {
+            const replies = await this.getCommentReplies(comment.$id);
+            return {
+              ...comment,
+              replies: replies.documents,
+              repliesCount: replies.total,
+            };
+          },
+        ),
       );
 
       return {
