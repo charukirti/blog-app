@@ -177,7 +177,7 @@ export default function Header({ variant }: HeaderProps) {
                         </DropdownMenuItem>
 
                         <DropdownMenuItem asChild>
-                          <Link to="/bookmarks">
+                          <Link to="/dashboard/bookmarks">
                             <Bookmark className="mr-2 h-4 w-4" />
                             Bookmarks
                           </Link>
