@@ -18,7 +18,7 @@ export const COLLECTIONS = {
   BLOGS: import.meta.env.VITE_APPWRITE_POSTS_COLLECTION_ID,
   COMMENTS: import.meta.env.VITE_APPWRITE_COMMENTS_COLLECTION_ID,
   LIKES: import.meta.env.VITE_APPWRITE_LIKES_COLLECTION_ID,
+  BOOKMARKS: import.meta.env.VITE_APPWRITE_BOOKMARKS_COLLECTION_ID,
 };
 
-
-export const bucketID = import.meta.env.VITE_APPWRITE_BUCKET_ID
+export const bucketID = import.meta.env.VITE_APPWRITE_BUCKET_ID;

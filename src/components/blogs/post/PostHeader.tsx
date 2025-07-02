@@ -4,8 +4,10 @@ import GoBack from "./GoBack";
 import { formatDate } from "@/utils/formatDate";
 import LikeButton from "../common/LikeButton";
 import { useAppSelector } from "@/store/typedHooks";
-import { BookmarkPlus, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import SocialShare from "./SocialShare";
+import BookmarkButton from "@/components/dashboard/Bookmarks/BookmarkButton";
+import { useGetBlogBookmarkCount } from "@/hooks/Bookmarks/useBookmarks";
 
 interface PostHeaderProps {
   blogId: string;
@@ -13,6 +15,8 @@ interface PostHeaderProps {
   publishedDate: string | undefined;
   authorName: string;
   content: string;
+  slug: string;
+  featured_image: string;
 }
 
 export default function PostHeader({
@@ -21,10 +25,13 @@ export default function PostHeader({
   authorName,
   content,
   blogId,
+  slug,
+  featured_image,
 }: PostHeaderProps) {
   const { user } = useAppSelector((state) => state.auth);
   const readTime = calculateReadTime(content);
   const date = formatDate(publishedDate!);
+  const { data: bookmarkCount } = useGetBlogBookmarkCount(blogId);
   return (
     <header className="mb-8">
       <GoBack />
@@ -49,7 +56,20 @@ export default function PostHeader({
         </div>
 
         <div className="flex items-center gap-4">
-          <BookmarkPlus />
+          <div className="flex items-center gap-1">
+            <BookmarkButton
+              blogId={blogId}
+              userId={user?.$id || ""}
+              blogData={{
+                title,
+                slug,
+                author_name: authorName,
+                featured_image: featured_image,
+              }}
+            />
+
+            <span className="text-xl font-semibold">{bookmarkCount}</span>
+          </div>
           <SocialShare title={title} />
         </div>
       </div>

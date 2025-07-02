@@ -28,6 +28,8 @@ export default function BlogPost() {
         blogId={post?.$id || ""}
         authorName={post?.author_name}
         content={post?.content}
+        slug={post?.slug}
+        featured_image={post?.featured_image}
       />
 
       <ThumbnailComponent

@@ -64,3 +64,14 @@ export interface CreateBlog {
   category: string;
   status: "draft" | "published";
 }
+
+export interface Bookmark extends Models.Document {
+  user_id: string;
+  blog_id: string;
+}
+
+export interface BookmarkedBlogs extends Blog {
+  bookmarkId: string;
+  bookmarkedAt: string;
+  blogId: string;
+}
