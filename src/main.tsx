@@ -7,6 +7,7 @@ import { store } from "./store/store.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ToastContainer } from "react-toastify";
+import { ErrorBoundary } from "./components/ErrorBoundry.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,16 +21,22 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-        <ReactQueryDevtools initialIsOpen={false} />
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={true}
-        />
-      </QueryClientProvider>
-    </Provider>
+    <ErrorBoundary
+      onError={(error, errorInfo) => {
+        console.error("Global Error Boundary caught", error, errorInfo);
+      }}
+    >
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <App />
+          <ReactQueryDevtools initialIsOpen={false} />
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={true}
+          />
+        </QueryClientProvider>
+      </Provider>
+    </ErrorBoundary>
   </StrictMode>,
 );
