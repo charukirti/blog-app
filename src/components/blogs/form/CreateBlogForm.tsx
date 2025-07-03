@@ -17,6 +17,7 @@ import { useUploadThumbnail } from "@/hooks/storage/useStorage";
 import { toast } from "react-toastify";
 import TipTapEditor from "./TipTapEditor";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 interface CreateBlogFormProps {
   onSubmit: (data: CreateBlog) => void;
@@ -27,6 +28,7 @@ interface CreateBlogFormProps {
   editingBlogId?: string;
   initialData?: Partial<CreateBlogFormData>;
   isDraftError?: boolean;
+  existingFeaturedImage?: string;
 }
 
 export default function CreateBlogForm({
@@ -38,6 +40,7 @@ export default function CreateBlogForm({
   onDraftSave,
   isSaving = false,
   isDraftError,
+  existingFeaturedImage,
 }: CreateBlogFormProps) {
   const {
     register,
@@ -54,7 +57,8 @@ export default function CreateBlogForm({
       ...initialData,
     },
   });
-
+  const [thumbnailUrl, setThumbnailUrl] = useState(existingFeaturedImage);
+  const [thumbnailFileId, setThumbnailFileId] = useState<string | undefined>();
   const { user } = useAppSelector((state) => state.auth);
   const { mutateAsync: uploadThumbnail, isPending: isUploadingThumbnail } =
     useUploadThumbnail();
@@ -64,11 +68,13 @@ export default function CreateBlogForm({
     isDraft = false,
   ) => {
     try {
-      let featuredImageUrl: string | undefined = undefined;
+      let featuredImageUrl: string | undefined = existingFeaturedImage;
 
-      if (data.featured_image) {
+      if (data.featured_image && data.featured_image instanceof File) {
         const result = await uploadThumbnail(data.featured_image);
         featuredImageUrl = result.url;
+
+        setThumbnailFileId(result.fileId);
       }
       const blogData: CreateBlog = {
         title: data.title,
@@ -81,6 +87,7 @@ export default function CreateBlogForm({
         author_id: user?.$id,
         author_name: user?.name,
         featured_image: featuredImageUrl,
+
         status: isDraft ? "draft" : "published",
       };
 
@@ -182,6 +189,12 @@ export default function CreateBlogForm({
               helperText="Upload a thumbnail image for your blog post"
               error={errors.featured_image}
               register={register("featured_image")}
+              previewUrl={thumbnailUrl}
+              onImageRemoved={() => {
+                setThumbnailUrl(undefined);
+                setValue("featured_image", null);
+              }}
+              featuredImageId={thumbnailFileId}
             />
 
             <AddTagsField

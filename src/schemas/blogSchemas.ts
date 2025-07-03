@@ -8,7 +8,7 @@ export const createBlogSchema = z.object({
   category: z.string().min(4, "Category name must be at least 4 characters"),
   featured_image: z.instanceof(File, {
     message: "Please select an image file",
-  }),
+  }).optional().nullable(),
   content: z.string().min(10, "Content should be at least 10 characters"),
 });
 

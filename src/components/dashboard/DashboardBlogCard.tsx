@@ -16,7 +16,11 @@ import { Link, useNavigate } from "react-router";
 import { useGetLikeCount } from "@/hooks/Likes/useLikes";
 import { useGetCommentsCount } from "@/hooks/comments/useComments";
 import Avatar from "../blogs/common/Avatar";
-import { usePublishDraft, useUnpublishPost } from "@/hooks/blog/useBlog";
+import {
+  useDeleteBlog,
+  usePublishDraft,
+  useUnpublishPost,
+} from "@/hooks/blog/useBlog";
 
 export default function DashboardBlogCard({ blog }: { blog: Blog }) {
   const readingTime = calculateReadTime(blog.content);
@@ -26,6 +30,7 @@ export default function DashboardBlogCard({ blog }: { blog: Blog }) {
   const { mutate: publishDraft, isPending: isPublishing } = usePublishDraft();
   const { mutate: unpublishPost, isPending: isUnpublishing } =
     useUnpublishPost();
+  const { mutate: deleteBlog, isPending: isDeletingBlog } = useDeleteBlog();
 
   const handlePublishToggle = () => {
     if (blog.status === "published") {
@@ -35,7 +40,10 @@ export default function DashboardBlogCard({ blog }: { blog: Blog }) {
     }
   };
 
-  const isLoading = isPublishing || isUnpublishing;
+  const handleDeleteBlog = () => {
+    deleteBlog(blog.$id);
+  };
+  const isLoading = isPublishing || isUnpublishing || isDeletingBlog;
 
   return (
     <article
@@ -151,9 +159,13 @@ export default function DashboardBlogCard({ blog }: { blog: Blog }) {
                 </>
               )}
             </button>
-            <button className="flex items-center gap-1 rounded-md border border-red-300 px-3 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-600 dark:text-red-400 dark:hover:bg-red-900/30">
+            <button
+              className="flex items-center gap-1 rounded-md border border-red-300 px-3 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-600 dark:text-red-400 dark:hover:bg-red-900/30"
+              onClick={handleDeleteBlog}
+              disabled={isLoading}
+            >
               <Trash2 className="h-4 w-4" />
-              Delete
+              {isDeletingBlog ? "Deleting" : "Delete"}
             </button>
           </div>
         </footer>

@@ -2,6 +2,7 @@ import { COLLECTIONS, DATABASE_ID, databases } from "@/lib/appwrite";
 import type { CreateBlog } from "@/types";
 import { ID, Query } from "appwrite";
 import { storageService } from "./storageService";
+import { LikeService } from "./LikeService";
 
 export const blogService = {
   async getPosts() {
@@ -95,7 +96,7 @@ export const blogService = {
     }
   },
 
-  async incrementBlogView(id: string ) {
+  async incrementBlogView(id: string) {
     const blog = await databases.getDocument(
       DATABASE_ID,
       COLLECTIONS.BLOGS,
@@ -112,6 +113,16 @@ export const blogService = {
 
   async unpublishPost(id: string) {
     return await this.updateBlog(id, { status: "draft" });
+  },
+  async getDraftPosts() {
+    return await databases.listDocuments(DATABASE_ID, COLLECTIONS.BLOGS, [
+      Query.equal("status", "draft"),
+      Query.orderDesc("$createdAt"),
+    ]);
+  },
+
+  async getPostById(id: string) {
+    return await databases.getDocument(DATABASE_ID, COLLECTIONS.BLOGS, id);
   },
 
   async deleteBlog(id: string) {

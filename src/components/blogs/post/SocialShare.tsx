@@ -14,6 +14,7 @@ import {
   FaLinkedinIn,
   FaRedditAlien,
 } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 interface SocialShareProps {
   title: string;
@@ -32,7 +33,9 @@ export default function SocialShare({ title }: SocialShareProps) {
   const encodedTitle = encodeURIComponent(title);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success("Link copied to clipboard!");
+    });
   };
 
   return (
@@ -41,56 +44,58 @@ export default function SocialShare({ title }: SocialShareProps) {
         <Share2 className="h-5 w-5" />
       </PopoverTrigger>
 
-      <PopoverContent className="flex w-72 items-center gap-2">
-        <button className="w-full justify-start" onClick={handleCopy}>
+      <PopoverContent className="flex items-center">
+        <Button variant="ghost" className="justify-start" onClick={handleCopy}>
           <Copy className="mr-2 h-4 w-4" />
-        </button>
-        <a
-          href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="ghost" className="w-full justify-start">
-            <FaWhatsapp />
-          </Button>
-        </a>
-        <a
-          href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="ghost" className="w-full justify-start">
-            <FaXTwitter />
-          </Button>
-        </a>
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="ghost" className="w-full justify-start">
-            <FaFacebookF />
-          </Button>
-        </a>
-        <a
-          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="ghost" className="w-full justify-start">
-            <FaLinkedinIn />
-          </Button>
-        </a>
+        </Button>
 
-        <a
-          href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="ghost" className="w-full justify-start">
+        <Button variant="ghost" className="justify-start" asChild>
+          <a
+            href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaWhatsapp />
+          </a>
+        </Button>
+
+        <Button variant="ghost" className="justify-start" asChild>
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaXTwitter />
+          </a>
+        </Button>
+        <Button variant="ghost" className="justify-start" asChild>
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaFacebookF />
+          </a>
+        </Button>
+        <Button variant="ghost" className="justify-start" asChild>
+          <a
+            href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaLinkedinIn />
+          </a>
+        </Button>
+
+        <Button variant="ghost" className="justify-start" asChild>
+          <a
+            href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaRedditAlien />
-          </Button>
-        </a>
+          </a>
+        </Button>
       </PopoverContent>
     </Popover>
   );

@@ -20,6 +20,21 @@ export function useGetPostBySlug(slug: string) {
   });
 }
 
+export function useGetDraftPosts() {
+  return useQuery({
+    queryKey: blogKeys.draftPosts(),
+    queryFn: () => blogService.getDraftPosts(),
+  });
+}
+
+export function useGetPostById(id: string) {
+  return useQuery({
+    queryKey: blogKeys.post(id),
+    queryFn: () => blogService.getPostById(id),
+    enabled: !!id,
+  });
+}
+
 export function useSearchPosts(searchTerm: string) {
   const debouncedSearch = useDebounced(searchTerm, 400);
 
@@ -138,7 +153,9 @@ export function useDeleteBlog() {
       queryClient.invalidateQueries({
         queryKey: blogKeys.draftPosts(),
       });
+      toast.success("Blog deleted successfully");
     },
+
     onError: (error) => {
       toast.error(error.message || "Failed to delete blog");
     },
