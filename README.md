@@ -1,54 +1,96 @@
-# React + TypeScript + Vite
+# Bloggify 📝
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern blogging platform where users can create, read, comment, like, and manage blog posts with dashboard and analytics.
 
-Currently, two official plugins are available:
+## Live Link 🌐
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Screenshots
 
-## Expanding the ESLint configuration
+### 🔐 Login Page
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![Login](./screenshots/login.png)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 🏠 Home Page
+
+![Home](./screenshots/home.png)
+
+---
+
+### 📝 Blog Post Page
+
+![Blog Post](./screenshots/blog-post.png)
+
+---
+
+### 📊 Dashboard
+
+![Dashboard](./screenshots/dashboard.png)
+
+---
+
+### ✍️ Create Blog Page
+
+![Create Blog](./screenshots/create-blog.png)
+
+## 🛠️ Tech Stack
+
+- **Framework**: React + Vite
+- **Language**: TypeScript
+- **Routing**: React Router
+- **Styling**: Tailwind CSS
+- **State Management**: Redux Toolkit, TanStack Query
+- **Backend**: Appwrite (Database, Auth, Storage)
+- **Charts**: Recharts
+
+### 🧰 Additional Libraries
+
+- **Rich Text Editor**: Tiptap Editor
+- **Form Handling**: React Hook Form + Zod
+- **Component Library**: shadcn/ui
+- **Icons**: Lucide React
+
+## 💡 Features
+
+- User authentication (signup, login)
+- Create, edit, and delete blogs
+- Like and comment on posts (with reply support)
+- Blog dashboard with analytics (views, likes, comments)
+- Dark mode support
+- Responsive design for all screen sizes
+
+## 📦 Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/charukirti/blog-app
+cd blog-app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install Dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+pnpm install
+```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### 3. Setup environment variables
+
+```bash
+VITE_APPWRITE_URL=https://your-appwrite-endpoint.com/v1
+VITE_APPWRITE_PROJECT_ID=your_project_id
+VITE_APPWRITE_DEV_KEY=your_dev_key
+
+VITE_APPWRITE_DATABASE_ID=your_database_id
+VITE_APPWRITE_POSTS_COLLECTION_ID=your_posts_collection_id
+VITE_APPWRITE_COMMENTS_COLLECTION_ID=your_comments_collection_id
+VITE_APPWRITE_LIKES_COLLECTION_ID=your_likes_collection_id
+VITE_APPWRITE_BOOKMARKS_COLLECTION_ID=your_bookmarks_collection_id
+
+VITE_APPWRITE_BUCKET_ID=your_bucket_id
+```
+
+### 4. Start development server
+
+```bash
+pnpm run dev
 ```
