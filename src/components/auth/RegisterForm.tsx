@@ -5,7 +5,7 @@ import FormField from "./FormField";
 import { Button } from "../ui/button";
 import { authService } from "@/services/authServices";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAppSelector } from "@/store/typedHooks";
 
 export default function RegisterForm() {
@@ -42,7 +42,7 @@ export default function RegisterForm() {
   return (
     <section className="w-full max-w-md space-y-8">
       <div>
-        <h2 className="font-poppins text-center text-3xl font-extrabold dark:text-gray-100">
+        <h2 className="font-poppins text-center text-2xl sm:text-3xl font-extrabold dark:text-gray-100">
           Register your account
         </h2>
       </div>
@@ -87,6 +87,9 @@ export default function RegisterForm() {
           {isSubmitting ? "Creating Account..." : "Register"}
         </Button>
       </form>
+      <span className="text-center">
+        Already have an account? <Link to="/auth/login">Login</Link>
+      </span>
     </section>
   );
 }

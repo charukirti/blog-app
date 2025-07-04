@@ -63,7 +63,7 @@ export default function Header({ variant }: HeaderProps) {
           </Link>
 
           {(isLogin || isRegister) && (
-            <div className="flex items-center space-x-2 text-sm">
+            <div className="hidden items-center space-x-2 text-sm sm:flex">
               {isLogin ? (
                 <>
                   <span className="font-poppins text-base font-semibold text-gray-600 dark:text-gray-300">

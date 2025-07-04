@@ -26,6 +26,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
             src={blog.featured_image}
             className="h-48 w-full rounded-xl transition-transform duration-300 hover:scale-105"
             alt={blog.title}
+            loading="lazy" 
           />
         </section>
         <section className="flex flex-col gap-3 p-6">

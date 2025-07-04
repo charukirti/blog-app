@@ -154,13 +154,7 @@ export function useBlogLikes(blogId: string) {
   });
 }
 
-export function useUserLikedPosts(userId: string) {
-  return useQuery({
-    queryKey: likeKeys.userLikes(userId),
-    queryFn: () => LikeService.getUserLikedPosts(userId),
-    enabled: !!userId,
-  });
-}
+
 
 export function useLikeStatus(blogId: string, userId: string) {
   const hasLikedQuery = useHasUserLiked(blogId, userId);

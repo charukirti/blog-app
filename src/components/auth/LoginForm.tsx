@@ -75,6 +75,7 @@ export default function LoginForm() {
           {isSubmitting ? "Logging in..." : "Log in"}
         </Button>
       </form>
+      <span className="text-center">Don't have an account? <Link to='/auth/register'>Register</Link></span>
     </section>
   );
 }

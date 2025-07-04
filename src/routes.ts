@@ -1,21 +1,22 @@
+import { lazy } from "react";
 import { createBrowserRouter, redirect } from "react-router";
 import Home from "./pages/Home";
 import RootLayout from "./layouts/RootLayout";
-import BlogPost from "./pages/blog/BlogPost";
-import CreateBlog from "./pages/blog/CreateBlog";
-import EditBlog from "./pages/blog/EditBlog";
+const BlogPost = lazy(() => import("./pages/blog/BlogPost"));
+const CreateBlog = lazy(() => import("./pages/blog/CreateBlog"));
+const EditBlog = lazy(() => import("./pages/blog/EditBlog"));
 import AuthLayout from "./layouts/AuthLayout";
-import LoginForm from "./components/auth/LoginForm";
-import RegisterForm from "./components/auth/RegisterForm";
-import NotFound from "./pages/NotFound";
+const LoginForm = lazy(() => import("./components/auth/LoginForm"));
+const RegisterForm = lazy(() => import("./components/auth/RegisterForm"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 import { store } from "./store/store";
 import { authService } from "./services/authServices";
-import Dashboard from "./pages/dashboard/Dashboard";
-import Bookmarks from "./pages/dashboard/Bookmarks";
-import ForgotPassword from "./components/auth/ForgotPassword";
-import ResetPassword from "./components/auth/ResetPassword";
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+const Bookmarks = lazy(() => import("./pages/dashboard/Bookmarks"));
+const ForgotPassword = lazy(() => import("./components/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("./components/auth/ResetPassword"));
 import DashboardLayout from "./layouts/DashboardLayout";
-import Analytics from "./pages/dashboard/Analytics";
+const Analytics = lazy(() => import("./pages/dashboard/Analytics"));
 
 const checkAuthAndUpdateStore = async () => {
   const { auth } = store.getState();
@@ -128,22 +129,22 @@ export const router = createBrowserRouter([
       {
         path: "login",
         Component: LoginForm,
-        loader: requireGuest,
+        // loader: requireGuest,
       },
       {
         path: "register",
         Component: RegisterForm,
-        loader: requireGuest,
+        // loader: requireGuest,
       },
       {
         path: "forgot-password",
         Component: ForgotPassword,
-        loader: requireGuest,
+        // loader: requireGuest,
       },
       {
         path: "reset-password",
         Component: ResetPassword,
-        loader: requireGuest,
+        // loader: requireGuest,
       },
     ],
   },

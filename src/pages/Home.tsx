@@ -1,10 +1,11 @@
-import BlogList from "@/components/blogs/list/BlogList";
-import CategoryDropdown from "@/components/blogs/list/CategoryDropdown";
-
+import { lazy, Suspense, useState } from "react";
 import Loader from "@/components/Loader";
 import { useGetPosts } from "@/hooks/blog/useBlog";
 import type { Blog } from "@/types";
-import { useState } from "react";
+const BlogList = lazy(() => import("@/components/blogs/list/BlogList"));
+const CategoryDropdown = lazy(
+  () => import("@/components/blogs/list/CategoryDropdown"),
+);
 
 export default function Home() {
   const { isLoading, data, isError } = useGetPosts();
@@ -41,13 +42,17 @@ export default function Home() {
           </p>
         </div>
 
-        <CategoryDropdown
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
+        <Suspense fallback={<Loader />}>
+          <CategoryDropdown
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+          />
+        </Suspense>
       </header>
       <main>
-        <BlogList blogs={filteredBlogs} />
+        <Suspense fallback={<Loader />}>
+          <BlogList blogs={filteredBlogs} />
+        </Suspense>
       </main>
     </div>
   );
