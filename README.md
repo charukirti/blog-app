@@ -2,7 +2,7 @@
 
 A modern blogging platform where users can create, read, comment, like, and manage blog posts with dashboard and analytics.
 
-## Live Link 🌐
+### 🔗 **Live Demo:** [MyScriptly](https://myscriptly.vercel.app/)
 
 ## 📸 Screenshots
 
