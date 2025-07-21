@@ -2,7 +2,6 @@ import { COLLECTIONS, DATABASE_ID, databases } from "@/lib/appwrite";
 import type { CreateBlog } from "@/types";
 import { ID, Query } from "appwrite";
 import { storageService } from "./storageService";
-import { LikeService } from "./LikeService";
 
 export const blogService = {
   async getPosts() {

@@ -115,9 +115,6 @@ export function useDeleteComment() {
   return useMutation({
     mutationFn: ({
       commentId,
-      blogId,
-      userId,
-      parentId,
     }: {
       commentId: string;
       blogId: string;

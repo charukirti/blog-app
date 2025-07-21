@@ -53,7 +53,7 @@ export function useBlogLike() {
       return { previousHasLiked, previousLikeCount, blogId, userId };
     },
 
-    onError: (error, variables, context) => {
+    onError: (error, _variables, context) => {
       if (context) {
         queryClient.setQueryData(
           likeKeys.hasLiked(context.blogId, context.userId),
@@ -68,7 +68,7 @@ export function useBlogLike() {
       toast.error(error.message || "Failed to like post");
     },
 
-    onSuccess: (data, { blogId, userId }) => {
+    onSuccess: (_data, { blogId, userId }) => {
       queryClient.invalidateQueries({
         queryKey: likeKeys.hasLiked(blogId, userId),
       });
@@ -114,7 +114,7 @@ export function useUnlikeBlog() {
       return { previousHasLiked, previousLikeCount, blogId, userId };
     },
 
-    onError: (error, variables, context) => {
+    onError: (error, _variables, context) => {
       if (context) {
         queryClient.setQueryData(
           likeKeys.hasLiked(context.blogId, context.userId),
@@ -129,7 +129,7 @@ export function useUnlikeBlog() {
       toast.error(error.message || "Failed to unlike post");
     },
 
-    onSuccess: (data, { blogId, userId }) => {
+    onSuccess: (_data, { blogId, userId }) => {
       queryClient.invalidateQueries({
         queryKey: likeKeys.hasLiked(blogId, userId),
       });

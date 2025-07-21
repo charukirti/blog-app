@@ -1,4 +1,5 @@
 import DashboardBlogCard from "@/components/dashboard/DashboardBlogCard";
+import Loader from "@/components/Loader";
 import SearchBar from "@/components/ui/SearchBar";
 import { useGetUserPosts } from "@/hooks/dashboard/useDashboard";
 import { useAppSelector } from "@/store/typedHooks";
@@ -6,11 +7,11 @@ import type { Blog } from "@/types";
 
 export default function Dashboard() {
   const { user } = useAppSelector((state) => state.auth);
-  const { data: userPosts, isLoading, isError } = useGetUserPosts(user?.$id);
+  const { data: userPosts, isLoading } = useGetUserPosts(user?.$id);
   
 
   if (isLoading)
-    return <p className="text-xl font-semibold">Loading your posts....</p>;
+    return <Loader/>;
 
   const posts = (userPosts?.documents as Blog[]) || [];
   return (

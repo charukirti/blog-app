@@ -66,8 +66,6 @@ export function useRemoveBookmark() {
   return useMutation({
     mutationFn: ({
       bookmarkId,
-      userId,
-      blogId,
     }: {
       bookmarkId: string;
       userId: string;

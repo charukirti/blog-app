@@ -48,15 +48,15 @@ const requireAuth = async () => {
   return null;
 };
 
-const requireGuest = async () => {
-  const isAuthenticated = await checkAuthAndUpdateStore();
+// const requireGuest = async () => {
+//   const isAuthenticated = await checkAuthAndUpdateStore();
 
-  if (isAuthenticated) {
-    throw redirect("/");
-  }
+//   if (isAuthenticated) {
+//     throw redirect("/");
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 const restoreAuthState = async () => {
   await checkAuthAndUpdateStore();
